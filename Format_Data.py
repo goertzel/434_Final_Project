@@ -4,8 +4,12 @@ import numpy as np
 
 
 def read_in_data(dir, subject):
-	X = np.genfromtxt( open(dir+'/'+'Subject_'+str(subject)+'.csv') , delimiter=',')
-	I = np.asmatrix(np.genfromtxt( open(dir+'/'+'list_'+str(subject)+'.csv') , delimiter=',')).T
+	data_file = open(dir+'/'+'Subject_'+str(subject)+'.csv')
+	X = np.genfromtxt( data_file , delimiter=',')
+	data_file.close()
+	ind_file = open(dir+'/'+'list_'+str(subject)+'.csv')
+	I = np.asmatrix(np.genfromtxt( ind_file , delimiter=',')).T
+	ind_file.close()
 	X = np.hstack( (I, np.delete(X, 0, 1)) ) # Remove Timestamp and Prepend Indices 
 	return X
 
