@@ -1,7 +1,7 @@
 import numpy as np
 import random
 
-# np.set_printoptions(precision=4, suppress=True)
+np.set_printoptions(precision=3, suppress=True)
 
 # Reads in a subject's data
 def read_in_data(dir, subject):
@@ -30,12 +30,19 @@ def join_time_cols(X):
 # Creates the flattened 35-feature vectors (plus class label)
 def create_instances(X):
 	new_X = []
+	ground_truth = []
 	i = 0
 	while (i < len(X)-7):
 		if ( (X.item(i+6,0) - X.item(i,0)) == 6 ):
 			new_X.append((X[i:i+7][:,1:6]).flatten().tolist()[0] + [X.item(i+7, X.shape[1]-1)])
+			ground_truth.append(X.item(i+7, X.shape[1]-1))
 			# i = i + 6
 		i += 1
+
+	f = open("training_truth.csv", 'w')
+	for g in ground_truth:
+		f.write(str(g)+'\n')
+	f.close()
 	return new_X
 
 # Returns joined instances of subjects provided in tuple
@@ -56,16 +63,19 @@ def get_data(subjects, dir='General_Population'):
 		return X
 
 # Read in a sample from test data 
-def read_in_sample(sample, dir='Sample_Test_Data'):
-	test_file = open(dir+'/'+'sampleinstance_'+str(sample)+'.csv')
-	T = np.genfromtxt( test_file , delimiter=',')
-	test_file.close()
+def read_in_test(sample, dir='Sample_Test_Data', test=False):
+	if test:
+		file = open(dir+'/'+sample+'_test_instances.csv')
+	else:
+		file = open(dir+'/'+'sampleinstance_'+str(sample)+'.csv')
+	T = np.genfromtxt( file , delimiter=',')
+	file.close()
 	return T
 
 # Get samples
 def get_samples(samples, dir='Sample_Test_Data'):
 	if isinstance(samples, (int, long)):
-		S = read_in_sample(samples, dir)
+		S = read_in_test(samples, dir, test=False)
 		S = join_time_cols(S)
 		S = np.delete(S, 0, 1)
 		S = S.flatten().tolist()
@@ -73,7 +83,7 @@ def get_samples(samples, dir='Sample_Test_Data'):
 	else:
 		X = []
 		for i in samples:
-			S = read_in_sample(i, dir)
+			S = read_in_test(i, dir, test=False)
 			S = join_time_cols(S)
 			S = np.delete(S, 0, 1)
 			S = S.flatten().tolist()
@@ -96,7 +106,27 @@ def get_subsample(X, neg_count = 900, pos_count = 100):
 	
 	return subsample
 	
-# Read in and format 
+# Read in and format test data
+def get_testing_data(data):
+	T = read_in_test(data, dir='Final_Test_Data', test=True)
+	print T.shape
+
+	tmp = T[4]
+	print tmp
+
+	tmp2 = np.asmatrix([ tmp[i*7:i*7+7] for i in xrange(9) ]).T
+
+	print tmp2
+	tmp2 = np.delete(tmp2, 0, 1)
+	tmp2 = join_time_cols(tmp2)
+	# tmp2 = tmp2
+	print tmp2
+	# Tests = []
+	# for i in  T.shape[0]:
+	# 	tmp = 
+
+	# 	Tests.append(tmp)
+
 
 
 

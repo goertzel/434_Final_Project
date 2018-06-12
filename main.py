@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 from format_data   import get_data, get_subsample
+=======
+from format_data   import get_data, get_samples, get_testing_data
+>>>>>>> b7e84c6cc33200439d5511a51a25dc8765020ab2
 from perceptron    import Perceptron
 from decision_tree import DecisionTree
 import logistic_regression
@@ -8,26 +12,41 @@ import os
 def main():
 	print "CS 434 Final"
 	X = get_data((1,4,6,9))
-	sub_x = get_subsample(X)
+	training = get_subsample(X, 1000, 9000)
+	validation = get_subsample(X, 100, 900)
 	
 	# tree = DecisionTree(X,6)
 	# tree.print_tree()
 	
-	perceptron = Perceptron(sub_x)
-	write_predictions(perceptron.training_predictions)
-	print len([p[0,1] for p in perceptron.training_predictions if p[0,1] > 0])
+	# perceptron = Perceptron(sub_x)
+	# write_predictions(perceptron.training_predictions)
+	# print len([p[0,1] for p in perceptron.training_predictions if p[0,1] > 0])
+
+	# X = get_data(1)
+	# tree = DecisionTree(X,6)
+	# tree.print_tree()
 	
 	# lr = logistic_regression.LogisticRegression(X)
 	# lr.run()
 
 	# evaluate('pred', 'Sample_Test_Data/groundtruth')
+	# predictions = []
+	# samples = get_samples((1,2,3,4,5))
+	# print samples
+	# predictions = tree.get_predictions(samples)
+	# for point in samples:
+	# 	predictions.append(tree.get_choice(point))
+	# write_predictions(predictions)
+
+	# evaluate(gold='/Sample_Test_Data/groundtruth')
+	
 	
 	
 # Expects predictions as a matrix of form:
 # Rows x 2
 def write_predictions(predictions):
 	f = open("pred.csv", 'w')
-	map(lambda p: f.write(str(p[0]) + ',' +	str(p[1]) +'\n'), [(p[0,0], p[0,1]) for p in predictions])
+	map(lambda p: f.write(str(p[0]) + ',' +	str(p[1]) +'\n'), [(p[0,0], int(p[0,1])) for p in predictions])
 	f.close()
 
 def evaluate(pred='pred', gold='gold'):
