@@ -6,7 +6,6 @@ class Perceptron:
 		
 		self.weights = self.learn_weights()
 		self.predictions = self.predict()
-		
 
 	def learn_weights():
 		# Split Rows x Cols matrix into two matrices
@@ -33,8 +32,3 @@ class Perceptron:
 	def predict():
 		X = np.asmatrix(self.data[:, [i for i in xrange(self.data.shape[1]-1)]])
 		return X * self.weights
-		
-def write_predictions(predictions):
-	f = open("pred.csv", 'w')
-	map(lambda p: f.write(str(p)+'\n'), [p[0] for p in predictions])
-	f.close()
