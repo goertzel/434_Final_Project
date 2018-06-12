@@ -67,7 +67,7 @@ class DecisionTree():
 	 self.left.print_tree(depth+1)
 	 print "\t"*depth,"point["+str(self.feature_ind)+"] >",self.thresh
 	 self.right.print_tree(depth+1)
-   def get_predictions(self,points,tally=True):
+   def get_predictions(self,points,has_result=False):
       count = 0
       correct_count = 0
       positives = 0
@@ -82,7 +82,8 @@ class DecisionTree():
 	    correct_count = correct_count + 1
 	 count = count + 1
 	 predictions.append([P, guess])
-      print correct_count , "/" , count, "=" , float(correct_count)*100.0/float(count), "%"
+      if has_result is True:
+	 print correct_count , "/" , count, "=" , float(correct_count)*100.0/float(count), "%"
       print "Positive guesses:",positives
       return np.matrix(predictions)
 
