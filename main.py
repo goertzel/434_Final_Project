@@ -6,7 +6,7 @@ from format_data import get_data
 def main():
 	print "CS 434 Final"
 	X = get_data('General_Population',1)
-	# tree = DecisionTree(X,6)
+	tree = DecisionTree(X,6)
 	# tree.print_tree()
 	perceptron = Perceptron(X)
 	

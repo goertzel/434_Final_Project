@@ -71,8 +71,7 @@ def calculate_entropy(data):
    negative_count = 0.0
    for i in xrange(0,len(data)):
       item = data[i]
-      print item.shape
-      if item[-1][0] == 1:
+      if item[-1] == 1:
 	 positive_count = positive_count + 1.0
       else:
 	 negative_count = negative_count + 1.0
