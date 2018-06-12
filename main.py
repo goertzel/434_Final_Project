@@ -7,13 +7,15 @@ import os
 
 def main():
 	print "CS 434 Final"
-	X = get_data(1)
+	X = get_data((1,4,6,9))
 	# tree = DecisionTree(X,6)
 	# tree.print_tree()
+	lr = logistic_regression.LogisticRegression(X)
+	lr.run()
 	# perceptron = Perceptron(np.matrix(X))
 	# perceptron.predict()
 
-	evaluate('pred', 'Sample_Test_Data/groundtruth')
+	# evaluate('pred', 'Sample_Test_Data/groundtruth')
 	
 	
 # Expects predictions as a matrix of form:
