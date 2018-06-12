@@ -6,12 +6,13 @@
 
 import math
 import numpy as np
+import random
 
 class DecisionTree():
    def __init__(self,training_data,depth):
       self.leaf = False
+      base_entropy = calculate_entropy(training_data)
       if depth != 0:
-	 base_entropy = calculate_entropy(training_data)
 	 best_gain = -1
 	 best_ind = -1
 	 best_thresh = -1
@@ -42,6 +43,7 @@ class DecisionTree():
       else:
       	self.leaf = True
       if self.leaf == True:
+	self.confidence = 1.0 - base_entropy
       	total = sum([1 if point[-1] == 1 else -1 for point in training_data])
 	if total == 0:
 		self.choice = 0
@@ -50,8 +52,8 @@ class DecisionTree():
    def get_choice(self,point):
       if self.leaf == True:
 	if (self.choice == 0):
-	   return 1 if rand()%2 == 0 else -1
-      	return self.choice
+	   return (self.confidence,1) if random.randint(0,1) == 0 else (self.confidence,-1)
+      	return (self.confidence, self.choice)
       else:
       	if point[self.feature_ind] <= self.thresh:
 	  return self.left.get_choice(point)
@@ -65,6 +67,24 @@ class DecisionTree():
 	 self.left.print_tree(depth+1)
 	 print "\t"*depth,"point["+str(self.feature_ind)+"] >",self.thresh
 	 self.right.print_tree(depth+1)
+   def get_predictions(self,points,tally=True):
+      count = 0
+      correct_count = 0
+      positives = 0
+      predictions = []
+      for point in points:
+	 (P, guess) = self.get_choice(point)
+	 if guess == -1:
+	    guess = 0
+	 else:
+	    positives = positives + 1
+	 if guess == point[-1]:
+	    correct_count = correct_count + 1
+	 count = count + 1
+	 predictions.append([P, guess])
+      print correct_count , "/" , count, "=" , float(correct_count)*100.0/float(count), "%"
+      print "Positive guesses:",positives
+      return np.matrix(predictions)
 
 def calculate_entropy(data):
    positive_count = 0.0
