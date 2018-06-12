@@ -7,12 +7,15 @@ import os
 
 def main():
 	print "CS 434 Final"
-	X = get_data(1)
+	X = get_data((1,4,6,9))
 	# tree = DecisionTree(X,6)
 	# tree.print_tree()
+	
 	perceptron = Perceptron(np.matrix(X))
 	write_predictions(perceptron.predictions)
-	# print [p[1] for p in perceptron.predictions.tolist() if p[1] > 0]
+	
+	lr = logistic_regression.LogisticRegression(X)
+	lr.run()
 
 	# evaluate('pred', 'Sample_Test_Data/groundtruth')
 	
