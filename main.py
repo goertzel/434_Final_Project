@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-from format_data   import get_data, get_subsample
-=======
 from format_data   import get_data, get_samples, get_testing_data
->>>>>>> b7e84c6cc33200439d5511a51a25dc8765020ab2
 from perceptron    import Perceptron
 from decision_tree import DecisionTree
 import logistic_regression
