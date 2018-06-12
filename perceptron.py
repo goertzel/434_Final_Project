@@ -1,3 +1,5 @@
+import numpy as np
+
 class Perceptron:
 	def __init__(self, training_data, learning_rate = 0.01, error_threshold = 0.01):
 		self.training_data = training_data
@@ -7,17 +9,17 @@ class Perceptron:
 		self.weights = self.learn_weights()
 		self.predictions = self.predict()
 
-	def learn_weights():
+	def learn_weights(self):
 		# Split Rows x Cols matrix into two matrices
 		# X = Rows x Cols-1
 		# Y = Rows x 1
 		# W = Cols-1 x 1
 		# D = Cols-1 x 1
 	
-		X = np.asmatrix(self.data[:, [i for i in xrange(self.data.shape[1]-1)]])
-		Y = np.asmatrix(self.data[:, self.data.shape[1]-1])
-		W = np.zeros(X.shape[1], 1)
-		D = np.zeros(X.shape[1], 1)
+		X = np.asmatrix(self.training_data[:, [i for i in xrange(self.training_data.shape[1]-1)]])
+		Y = np.asmatrix(self.training_data[:, self.training_data.shape[1]-1])
+		W = np.zeros((X.shape[1], 1))
+		D = np.zeros((X.shape[1], 1))
 		
 		while 1:
 			for i in xrange(X.shape[0]):
@@ -29,6 +31,6 @@ class Perceptron:
 			if np.linalg.norm(D) < self.error_threshold:
 				return W
 				
-	def predict():
-		X = np.asmatrix(self.data[:, [i for i in xrange(self.data.shape[1]-1)]])
+	def predict(self):
+		X = np.asmatrix(self.training_data[:, [i for i in xrange(self.training_data.shape[1]-1)]])
 		return X * self.weights
