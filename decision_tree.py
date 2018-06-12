@@ -5,6 +5,7 @@
 #	choice = tree.get_choice(point)
 
 import math
+import numpy as np
 
 class DecisionTree():
    def __init__(self,training_data,depth):
@@ -68,8 +69,10 @@ class DecisionTree():
 def calculate_entropy(data):
    positive_count = 0.0
    negative_count = 0.0
-   for item in data:
-      if item[-1] == 1:
+   for i in xrange(0,len(data)):
+      item = data[i]
+      print item.shape
+      if item[-1][0] == 1:
 	 positive_count = positive_count + 1.0
       else:
 	 negative_count = negative_count + 1.0

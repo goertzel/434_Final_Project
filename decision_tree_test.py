@@ -1,6 +1,6 @@
 from decision_tree import DecisionTree
-
-training_data = [[3,2,3,1],[0,3,3,1],[1,4,1,0],[1,4,6,1],[-0.5,3,2,0],[-5.0,1,4,0]]
+import numpy as np
+training_data = np.array([[3,2,3,1],[0,3,3,1],[1,4,1,0],[1,4,6,1],[-0.5,3,2,0],[-5.0,1,4,0]])
 
 tree = DecisionTree(training_data,2)
 tree.print_tree()
