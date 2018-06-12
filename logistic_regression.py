@@ -1,3 +1,5 @@
+import numpy as np
+
 def calculate_w_BGD(X,Y,w,mu,Lambda):
    num_features = len(X[0])
    num_points = len(X)
