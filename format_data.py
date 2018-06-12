@@ -33,31 +33,23 @@ def create_instances(X):
 			new_X.append((X[i:i+7][:,1:6]).flatten().tolist()[0] + [X.item(i+7, X.shape[1]-1)])
 			# i = i + 6
 		i += 1
-
-	return np.matrix(new_X)
+	return new_X
 
 # Returns joined instances of subjects provided in tuple
 def get_data(subjects, filename='General_Population'):
-	return np.vstack([
-			create_instances(
-			join_time_cols  (
-			read_in_data    (filename, i)))
-			for i in subjects])
+	if isinstance(subjects, (int, long)):
+		S = read_in_data(filename,subjects)
+		S = join_time_cols(S)
+		S = create_instances(S)
+		return S
 
+	else:
+		X = []
+		for i in subjects:
+			S = read_in_data(filename,i)
+			S = join_time_cols(S)
+			S = create_instances(S)
+			X += S
+		return X
 
-#######################################
-# def get_data(filename='General_Population',ind=1):
-# 	X = read_in_data(filename,ind)
-
-# 	X = join_time_cols(X)
-
-# 	X = create_instances(X)
-
-# 	print X.shape
-
-# 	return X
-
-
-
-# subjects = get_subjects((1,2,4,6,7,9))	
 
