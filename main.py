@@ -12,10 +12,10 @@ def main():
 	# tree.print_tree()
 	
 	perceptron = Perceptron(np.matrix(X))
-	write_predictions(perceptron.predictions)
+	write_predictions(perceptron.training_predictions)
 	
-	lr = logistic_regression.LogisticRegression(X)
-	lr.run()
+	# lr = logistic_regression.LogisticRegression(X)
+	# lr.run()
 
 	# evaluate('pred', 'Sample_Test_Data/groundtruth')
 	

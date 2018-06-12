@@ -8,7 +8,7 @@ class Perceptron:
 		self.error_threshold = error_threshold
 		
 		self.weights = self.learn_weights()
-		self.predictions = self.predict()
+		self.training_predictions = self.predict(self.training_data)
 
 	def learn_weights(self):
 		# Split Rows x Cols matrix into two matrices
@@ -23,20 +23,21 @@ class Perceptron:
 		
 		epoch = 0
 		while 1:
+			D = np.zeros((X.shape[1], 1))
 			print epoch
 			epoch += 1
-			D = np.zeros((X.shape[1], 1))
 			for i in xrange(X.shape[0]):
 				prediction = np.matmul(W.T, X[i].T)
 				if np.matmul(Y[i], prediction) <=0:
 					D -= np.matmul(Y[i], X[i]).transpose()
 			D /= X.shape[0]
 			W -= self.learning_rate*D
+			print np.linalg.norm(D)
 			if np.linalg.norm(D) < self.error_threshold:
 				return W
 				
-	def predict(self):
-		X = np.asmatrix(self.training_data[:, [i for i in xrange(self.training_data.shape[1]-1)]])
+	def predict(self, data):
+		X = np.asmatrix(self.data[:, [i for i in xrange(self.data.shape[1]-1)]])
 		likelihoods = X * self.weights
 		classifications = np.matrix([[1 if likelihoods[i,j] > 0 else 0 for i in range(likelihoods.shape[0])] for j in range(likelihoods.shape[1])]).T
 		
