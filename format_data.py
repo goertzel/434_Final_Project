@@ -1,6 +1,6 @@
 import numpy as np
 
-np.set_printoptions(precision=2, suppress=True)
+np.set_printoptions(precision=3, suppress=True)
 
 # Reads in a subject's data
 def read_in_data(dir, subject):
@@ -18,7 +18,7 @@ def join_time_cols(X):
 	new_col = []
 	for xi in X:
 		# where = np.where( np.array(xi.tolist()[0][5:9]) == 1)[0]
-		where = np.where( np.array(xi[4:9]) == 1)[0]
+		where = np.where( np.array(xi[5:9]) == 1)[0]
 
 		new_col.append(where[0]+1 if len(where) else 0)
 
@@ -29,12 +29,19 @@ def join_time_cols(X):
 # Creates the flattened 35-feature vectors (plus class label)
 def create_instances(X):
 	new_X = []
+	ground_truth = []
 	i = 0
 	while (i < len(X)-7):
 		if ( (X.item(i+6,0) - X.item(i,0)) == 6 ):
 			new_X.append((X[i:i+7][:,1:6]).flatten().tolist()[0] + [X.item(i+7, X.shape[1]-1)])
+			ground_truth.append(X.item(i+7, X.shape[1]-1))
 			# i = i + 6
 		i += 1
+
+	f = open("training_truth.csv", 'w')
+	for g in ground_truth:
+		f.write(str(g)+'\n')
+	f.close()
 	return new_X
 
 # Returns joined instances of subjects provided in tuple
@@ -87,7 +94,7 @@ def get_testing_data(data):
 	T = read_in_test(data, dir='Final_Test_Data', test=True)
 	print T.shape
 
-	tmp = T[0]
+	tmp = T[4]
 	print tmp
 
 	tmp2 = np.asmatrix([ tmp[i*7:i*7+7] for i in xrange(9) ]).T
