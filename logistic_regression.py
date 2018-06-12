@@ -1,4 +1,5 @@
 import numpy as np
+import math
 
 def calculate_w_BGD(X,Y,w,mu,Lambda):
    num_features = len(X[0])
@@ -16,7 +17,8 @@ def calculate_w_BGD(X,Y,w,mu,Lambda):
    nabla_norm = np.linalg.norm(nabla)
    return (w, nabla_norm)
 
-def load_X_and_Y(training_data):
+def load_X_and_Y(non_array_data):
+   training_data = np.asarray(non_array_data)
    (rows, features) = training_data.shape
    X = np.zeros( (rows,features) )
    Y = np.zeros( (rows,1) )
@@ -41,12 +43,16 @@ class LogisticRegression():
 	 (w, nabla_norm) = calculate_w_BGD(self.X,self.Y,w,self.MU,self.Lambda)
       self.w = w
    def get_choice(self, point):
-      X_i = np.transpose(point)
+      temp_point = point
+      temp_point.append(1)
+      X_i = np.transpose([temp_point])
       w_T_X_i = np.matmul(np.transpose(self.w),X_i)[0][0]
       if w_T_X_i < -700:
 	 P = 0
       else:
 	 P = 1.0/(1.0+math.exp(-w_T_X_i))
       guess = 1 if P > 0.5 else 0
-      return (guess, P)
+      if (guess == 0):
+	 P = 1 - P
+      return (P, guess)
 
