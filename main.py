@@ -1,9 +1,16 @@
-import numpy as np
-import perceptron as p
+from perceptron import Perceptron
+from decision_tree import DecisionTree
+import logistic_regression
+from format_data import get_data
 
 def main():
-	data = get_processed_data('General_Population', 1)
-	p_model = p.Perceptron(data)
+  print "CS 434 Final"
+  X = get_data('General_Population',1)
+	tree = DecisionTree(X,6)
+	tree.print_tree()
+	
+	perceptron = Perceptron(X)
+	
 	
 # Expects predictions as a matrix of form:
 # Rows x 1

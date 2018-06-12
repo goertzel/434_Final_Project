@@ -38,12 +38,14 @@ def create_instances(X):
 
 
 #######################################
+def get_data(filename='General_Population',ind=1):
+	X = read_in_data(filename,ind)
 
-X = read_in_data('General_Population', 1)
+	X = join_time_cols(X)
 
-X = join_time_cols(X)
+	X = create_instances(X)
 
-X = create_instances(X)
+	print X.shape
 
-print X.shape
+	return X
 
