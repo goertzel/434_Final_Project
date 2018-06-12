@@ -2,7 +2,7 @@ import numpy as np
 
 # np.set_printoptions(precision=4, suppress=True)
 
-
+# Reads in a subject's data
 def read_in_data(dir, subject):
 	data_file = open(dir+'/'+'Subject_'+str(subject)+'.csv')
 	X = np.genfromtxt( data_file , delimiter=',')
@@ -13,10 +13,9 @@ def read_in_data(dir, subject):
 	X = np.hstack( (I, np.delete(X, 0, 1)) ) # Remove Timestamp and Prepend Indices 
 	return X
 
+# Merges morning, afternoon, evening, and night into a single feature
 def join_time_cols(X):
-	# Join Cols 5-8 into 1-4 value
 	tmp_X = []
-
 	for xi in X:
 		where = np.where( np.array(xi.tolist()[0][5:9]) == 1)[0]
 		tmp_X.append(where[0]+1 if len(where) else 0)
@@ -25,6 +24,7 @@ def join_time_cols(X):
 	X = np.insert(np.delete(X, np.s_[5:9], axis=1), 5, tmp_X,  1)
 	return X
 
+# Creates the flattened 35-feature vectors (plus class label)
 def create_instances(X):
 	new_X = []
 	i = 0
@@ -36,16 +36,28 @@ def create_instances(X):
 
 	return np.matrix(new_X)
 
+# Returns joined instances of subjects provided in tuple
+def get_data(subjects, filename='General_Population'):
+	return np.vstack([
+			create_instances(
+			join_time_cols  (
+			read_in_data    (filename, i)))
+			for i in subjects])
+
 
 #######################################
-def get_data(filename='General_Population',ind=1):
-	X = read_in_data(filename,ind)
+# def get_data(filename='General_Population',ind=1):
+# 	X = read_in_data(filename,ind)
 
-	X = join_time_cols(X)
+# 	X = join_time_cols(X)
 
-	X = create_instances(X)
+# 	X = create_instances(X)
 
-	print X.shape
+# 	print X.shape
 
-	return X
+# 	return X
+
+
+
+# subjects = get_subjects((1,2,4,6,7,9))	
 

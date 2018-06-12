@@ -1,7 +1,7 @@
-from perceptron import Perceptron
+from format_data   import get_data
+from perceptron    import Perceptron
 from decision_tree import DecisionTree
 import logistic_regression
-from format_data import get_data
 
 def main():
 	print "CS 434 Final"
