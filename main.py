@@ -1,7 +1,13 @@
 import perceptron
+from decision_tree import DecisionTree
+import logistic_regression
+from format_data import get_data
 
 def main():
-	
+    	print "CS 434 Final"
+   	X = get_data('General_Population',1)
+	tree = DecisionTree(X,6)
+	tree.print_tree()
 	
 # Expects predictions as a matrix of form:
 # Rows x 1
