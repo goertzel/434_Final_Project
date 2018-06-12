@@ -1,4 +1,4 @@
-from format_data   import get_data
+from format_data   import get_data, get_subsample
 from perceptron    import Perceptron
 from decision_tree import DecisionTree
 import logistic_regression
@@ -8,11 +8,14 @@ import os
 def main():
 	print "CS 434 Final"
 	X = get_data((1,4,6,9))
+	sub_x = get_subsample(X)
+	
 	# tree = DecisionTree(X,6)
 	# tree.print_tree()
 	
-	perceptron = Perceptron(np.matrix(X))
+	perceptron = Perceptron(sub_x)
 	write_predictions(perceptron.training_predictions)
+	print len([p[0,1] for p in perceptron.training_predictions if p[0,1] > 0])
 	
 	# lr = logistic_regression.LogisticRegression(X)
 	# lr.run()

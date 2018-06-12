@@ -1,4 +1,5 @@
 import numpy as np
+import random
 
 # np.set_printoptions(precision=4, suppress=True)
 
@@ -79,6 +80,22 @@ def get_samples(samples, dir='Sample_Test_Data'):
 			X.append(S)
 		return X
 
+# Get a subsample of the data
+def get_subsample(X, neg_count = 900, pos_count = 100):
+	negatives = np.matrix([row for row in X if row[-1] == 0])
+	positives = np.matrix([row for row in X if row[-1] == 1])
+	
+	neg_row_indices = np.random.choice([i for i in xrange(negatives.shape[0])], neg_count)
+	pos_row_indices = np.random.choice([i for i in xrange(positives.shape[0])], pos_count)
+	
+	sampled_negatives = np.vstack([negatives[index] for index in neg_row_indices])
+	sampled_positives = np.vstack([positives[index] for index in pos_row_indices])
+	
+	subsample = np.vstack([sampled_negatives, sampled_positives])
+	np.random.shuffle(subsample)
+	
+	return subsample
+	
 # Read in and format 
 
 
