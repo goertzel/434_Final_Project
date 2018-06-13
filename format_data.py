@@ -85,21 +85,19 @@ def get_subsample(X, neg_count = 900, pos_count = 100, validation=False):
 	negatives = np.matrix([row for row in X if row[-1] == 0])
 	positives = np.matrix([row for row in X if row[-1] == 1])
 	
-	neg_row_indices = np.random.choice([i for i in xrange(negatives.shape[0])], neg_count)
-	pos_row_indices = np.random.choice([i for i in xrange(positives.shape[0])], pos_count)
-	
+	neg_row_indices = np.random.choice(negatives.shape[0], neg_count)
+	pos_row_indices = np.random.choice(positives.shape[0], pos_count)
+
 	sampled_negatives = np.vstack([negatives[index] for index in neg_row_indices])
 	sampled_positives = np.vstack([positives[index] for index in pos_row_indices])
 	
 	subsample = np.vstack([sampled_negatives, sampled_positives])
-	np.random.shuffle(subsample)
 
 	if (validation):
 		f = open('valid_gold.csv', 'w')
 		for xi in subsample:
 			f.write(str(int(xi.item(35)))+'\n')
 		f.close()
-
 	return subsample
 	
 # Read in and format test data
