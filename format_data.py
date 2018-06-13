@@ -10,17 +10,22 @@ def read_in_data(dir, subject):
 	ind_file = open(dir+'/'+'list_'+str(subject)+'.csv')
 	I = np.asmatrix(np.genfromtxt( ind_file , delimiter=',')).T
 	ind_file.close()
-	X = np.hstack( (I, np.delete(X, 0, 1)) ) # Remove Timestamp and Prepend Indices 
+	 # Remove Timestamp and Prepend Indices 
+	X = np.append(I, np.delete(X, 0, 1), 1 )
 	return X
 
-# Merges morning, afternoon, evening, and night into a single feature
-def join_time_cols(X):
+# Merges morning, afternoon, and evening into a single feature
+def join_time_cols(X, type='training'):
 	new_col = []
 	for xi in X:
-		# where = np.where( np.array(xi.tolist()[0][5:9]) == 1)[0]
-		where = np.where( np.array(xi[5:9]) == 1)[0]
+		if (type == 'training'):
+			where = np.where( np.array(xi.tolist()[0][5:9]) == 1)[0]
+		elif (type == 'samples'):
+			where = np.where( np.array(xi[5:9]) == 1)[0]
+		elif (type == 'testing'):
+			where = np.where( np.array(xi.tolist()[0][4:8]) == 1)[0]
 
-		new_col.append(where[0]+1 if len(where) else 0)
+		new_col.append(np.average(where)+1 if len(where) else 0)
 
 	# Replace columns 5,6,7,8 with combined version
 	X = np.insert(np.delete(X, np.s_[5:9], axis=1), 5, new_col,  1)
@@ -46,20 +51,13 @@ def create_instances(X):
 
 # Returns joined instances of subjects provided in tuple
 def get_data(subjects, dir='General_Population'):
-	if isinstance(subjects, (int, long)):
-		S = read_in_data(dir, subjects)
-		S = join_time_cols(S)
+	X = []
+	for i in subjects:
+		S = read_in_data(dir,i)
+		S = join_time_cols(S, type="training")
 		S = create_instances(S)
-		return S
-
-	else:
-		X = []
-		for i in subjects:
-			S = read_in_data(dir,i)
-			S = join_time_cols(S)
-			S = create_instances(S)
-			X += S
-		return X
+		X += S
+	return X
 
 # Read in a sample from test data 
 def read_in_test(sample, dir='Sample_Test_Data', test=False):
@@ -73,44 +71,25 @@ def read_in_test(sample, dir='Sample_Test_Data', test=False):
 
 # Get samples
 def get_samples(samples, dir='Sample_Test_Data'):
-	if isinstance(samples, (int, long)):
-		S = read_in_test(samples, dir, test=False)
-		S = join_time_cols(S)
-		S = np.delete(S, 0, 1)
-		S = S.flatten().tolist()
-		return S
-	else:
-		X = []
-		for i in samples:
-			S = read_in_test(i, dir, test=False)
-			S = join_time_cols(S)
-			S = np.delete(S, 0, 1)
-			S = S.flatten().tolist()
-			X.append(S)
-		return X
+	X = []
+	for i in samples:
+		S = read_in_test(i, dir, test=False)
+		S = join_time_cols(S, type="samples")
+		S = np.delete(S, 0, 1).flatten().tolist()
+		X.append(S)
+	return X
 
 # Read in and format test data
 def get_testing_data(data):
 	T = read_in_test(data, dir='Final_Test_Data', test=True)
-	print T.shape
-
-	tmp = T[4]
-	print tmp
-
-	tmp2 = np.asmatrix([ tmp[i*7:i*7+7] for i in xrange(9) ]).T
-
-	print tmp2
-	tmp2 = np.delete(tmp2, 0, 1)
-	tmp2 = join_time_cols(tmp2)
-	# tmp2 = tmp2
-	print tmp2
-	# Tests = []
-	# for i in  T.shape[0]:
-	# 	tmp = 
-
-	# 	Tests.append(tmp)
-
-
+	Tests = []
+	for i in xrange(T.shape[0]):
+		tmp = np.asmatrix([ T[i][c*7:c*7+7] for c in xrange(9) ]).T
+		tmp = np.delete(tmp, 0, 1)
+		tmp = join_time_cols(tmp, type='testing')
+		tmp = np.delete(tmp, 4, 1)
+		Tests.append(tmp)
+	return Tests
 
 
 

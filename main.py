@@ -7,7 +7,21 @@ import os
 
 def main():
 	print "CS 434 Final"
-	X = get_data(1)
+
+	
+
+	# Example of reading training data
+	X = get_data((1,4))
+	# print np.asmatrix(X[198][0:35]).reshape(7,5)
+
+	# Example of reading samples
+	# samples = get_samples((5,))
+	# print np.asmatrix(samples[0][0:35]).reshape(7,5)
+
+	# Example of reading testing data
+	# T = get_testing_data('general')
+	# print np.asmatrix(T[3][0:35]).reshape(7,5)
+
 	tree = DecisionTree(X,6)
 	tree.print_tree()
 	
@@ -17,10 +31,7 @@ def main():
 	# lr = logistic_regression.LogisticRegression(X)
 	# lr.run()
 
-	# evaluate('pred', 'Sample_Test_Data/groundtruth')
-	# predictions = []
 	samples = get_samples((1,2,3,4,5))
-	# print samples
 	predictions = tree.get_predictions(samples)
 	# for point in samples:
 	# 	predictions.append(tree.get_choice(point))
