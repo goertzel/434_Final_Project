@@ -81,7 +81,7 @@ def get_samples(samples, dir='Sample_Test_Data'):
 	return X
 
 # Get a subsample of the data
-def get_subsample(X, neg_count = 900, pos_count = 100):
+def get_subsample(X, neg_count = 900, pos_count = 100, validation=False):
 	negatives = np.matrix([row for row in X if row[-1] == 0])
 	positives = np.matrix([row for row in X if row[-1] == 1])
 	
@@ -93,7 +93,13 @@ def get_subsample(X, neg_count = 900, pos_count = 100):
 	
 	subsample = np.vstack([sampled_negatives, sampled_positives])
 	np.random.shuffle(subsample)
-	
+
+	if (validation):
+		f = open('valid_gold.csv', 'w')
+		for xi in subsample:
+			f.write(str(int(xi.item(35)))+'\n')
+		f.close()
+
 	return subsample
 	
 # Read in and format test data
