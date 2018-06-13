@@ -16,14 +16,12 @@
 \subsection{Features} 
 What are the features you feed to your learning algorithm? Did you simply flatten the 7 rows into a vector for features? Did you transform or aggregate the given data to engineer your own features?
 
-We removed the time stamps, and only used the indicies for checking which instances where continuous. Additionally, we simplified the morning, afternoon, evening, night features into a single feature (i.e. 1 for morning, 2 for afternoon..., 0 if none). This left us with features for  glucose, slope, IOB, MOB, and our custom version of the time of day. These we flattened into a single 35 feature vector.
+We removed the time stamps, and only used the indices for checking which instances where continuous. Additionally, we simplified the morning, afternoon, evening, night features into a single feature (i.e. 1 for morning, 2 for afternoon..., 0 if none). This left us with features for  glucose, slope, IOB, MOB, and our custom version of the time of day. These we flattened into a single 35 feature vector.
 
 
 \subsection{Preprocessing}
 
 Did you pre-process your data in any way? This can be for the purpose of reducing dimension, or reducing noise, or balancing the class distribution. Be clear about what you exactly did. The criterion is to allow others to replicate your works.
-
-
 
 \section{Learning algorithms}
 
@@ -32,9 +30,17 @@ Provide a list of learning algorithms that you explored for this project. For ea
 
 \subsubsection{Decision Tree}
 
+
 \subsubsection{Logistic Regression}
 
+
 \subsubsection{Perceptron}
+
+
+\subsubsection{Random Forest}
+
+
+\subsubsection{K-Nearest Neighbour}
 
 
 \subsection{Final models}
