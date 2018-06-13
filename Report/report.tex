@@ -3,7 +3,7 @@
 \usepackage{graphicx}
 %\usepackage[colorinlistoftodos]{todonotes}
 
-\title{CS434 Final Project Report (3-page limit)}
+\title{CS434 Final Project Report}
 \author{Luke Goertzen \\ William Selbie \\ Trevor Swope}
 \date{}
 
@@ -16,14 +16,13 @@
 \subsection{Features} 
 What are the features you feed to your learning algorithm? Did you simply flatten the 7 rows into a vector for features? Did you transform or aggregate the given data to engineer your own features?
 
-We removed the time stamps, and only used the indicies for checking which instances where continuous. Additionally, we simplified the morning, afternoon, evening, night features into a single feature (i.e. 1 for morning, 2 for afternoon..., 0 if none). This left us with features for  glucose, slope, IOB, MOB, and our custom version of the time of day. These we flattened into a single 35 feature vector.
+We removed the time stamps, and only used the indices for checking which instances where continuous. Additionally, we simplified the morning, afternoon, evening, night features into a single feature (i.e. 1 for morning, 2 for afternoon..., 0 if none). This left us with features for  glucose, slope, IOB, MOB, and our custom version of the time of day. These we flattened into a single 35 feature vector consisting for the features of each 5 minute increment in a 30 minute window.
 
 
 \subsection{Preprocessing}
 
 Did you pre-process your data in any way? This can be for the purpose of reducing dimension, or reducing noise, or balancing the class distribution. Be clear about what you exactly did. The criterion is to allow others to replicate your works.
-
-
+We reduced the number of features the data had in the way outlined earlier. Beyond this, we also made use of subsampling, in which the data for a specific subject of set of subject can be passed into a function which will return a matrix containing a specified number of positive and negative examples taken from the data passed into the function. This allowed us to achieve any ratio of positive:negative samples, though since there are not as many positive samples to choose from positive instances typically had many duplicates.
 
 \section{Learning algorithms}
 
@@ -31,10 +30,17 @@ Did you pre-process your data in any way? This can be for the purpose of reducin
 Provide a list of learning algorithms that you explored for this project. For each algorithm, briefly justify your rationale for choosing this algorithm.
 
 \subsubsection{Decision Tree}
+Decision tree made a lot of sense intuitively, as it would seem that a hypo event might result from something passing over a certain threshhold, which is the type of thing a decision tree might detect. However, with so many features and so many data points, and probably some difference between each patient, decision tree is not likely to perform quite as well as a well-parametrized random forest model.
 
-\subsubsection{Logistic Regression}
+\subsubsection{Random Forest}
 
-\subsubsection{Perceptron}
+
+\subsubsection{K-Nearest Neighbor}
+We originally ignored K-Nearest Neighbor on the basis that it as the number of features grows large, the runtime drastically increases. Given that our data instances each had 35 features, finding the distance between points would certainly be slow. However, after perceptron and logistic regression did not give good results we decided to try it as it is more robust to non linearly separable data.
+
+
+\subsection{Perceptron and Logistic Regression}
+We initially explored the use of perceptron and logistic regression as classifiers for this problem, but we intuited after a few different trials that the data itself is in all likelihood not linearly separable. So, we opted to explore other options and chose Random Forest and K Nearest Neighbor to replace them.
 
 
 \subsection{Final models}
@@ -45,6 +51,8 @@ What are the final models that produced your submitted test predictions?
 
 \subsection{Parameter Tuning}
 What parameters did you tune for your models? How do you perform the parameter tuning?
+One of the parameters tuned for models is the positive:negative ratio of the dataset used to train and validate the models. We simply tried a variety of ratios and dataset sizes for training the models and then used the provided evaluation script to gauge validity. For Decision Tree and Random Forest we had to tune the depth of the tree, for Random Forests we also had to tune the size (number of trees) in the forest as well. Once again we did this by picking depth and forest size manually and then gauging the evaluation results. Naturally, for K-Nearest Neighbor we had to try a variety of Ks to determine which ones gave the best evaluation results. 
+
 
 \subsection{Model selection}
 How did you decide which models to use to produce the final predictions?  Do you use cross-validation or hold-out for model selection? When you split the data for validation, is it fully random or special consideration went into forming the folds? What criterion is used to select the models?
