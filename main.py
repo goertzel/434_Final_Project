@@ -1,6 +1,7 @@
 from format_data   import get_data, get_samples, get_testing_data, get_subsample
 from perceptron    import Perceptron
 from decision_tree import DecisionTree
+from knn	   import KNN
 import logistic_regression
 import numpy as np
 import os
@@ -25,7 +26,8 @@ def main():
 	tree = DecisionTree(X,6)
 	tree.print_tree()
 
-
+	my_knn = KNN(X)
+	predictions = my_knn.get_predictions(X)
 
 	X = get_data((1,4,6,9))
 	training = get_subsample(X, 1000, 9000)
