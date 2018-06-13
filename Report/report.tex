@@ -65,10 +65,13 @@ We simply tried a variety of ratios and dataset sizes for training the models an
 
 
 \subsection{Model selection}
-How did you decide which models to use to produce the final predictions?  Do you use cross-validation or hold-out for model selection? When you split the data for validation, is it fully random or special consideration went into forming the folds? What criterion is used to select the models?
+\textit{How did you decide which models to use to produce the final predictions?  Do you use cross-validation or hold-out for model selection? When you split the data for validation, is it fully random or special consideration went into forming the folds? What criterion is used to select the models?}
 
+For model selection, we typically took a random subsample as a validation set and ran it a few times, as well as generating a ground trouth for that validation set so we could evaluate not only raw accuracy but precision, recall, and F1 values. The models whose F1 and AUC values ended up the best were the ones we chose.
 
 \section{Results}
-Do you have any internal evaluation results you want to report?
+\texitit{Do you have any internal evaluation results you want to report?}
+
+Subsampling the features randomly helps performance for random forests significantly. Also, unsurprisingly, giving a disproportionate number of positive classified examples leads to significantly higher numbers of positive guesses, at the cost of precision.
 
 \end{document}
