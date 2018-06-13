@@ -1,4 +1,4 @@
-from format_data   import get_data, get_samples, get_testing_data
+from format_data   import get_data, get_samples, get_testing_data, get_subsample
 from perceptron    import Perceptron
 from decision_tree import DecisionTree
 import logistic_regression
@@ -7,9 +7,7 @@ import os
 
 def main():
 	print "CS 434 Final"
-
 	
-
 	# Example of reading training data
 	X = get_data((1,4))
 	# print np.asmatrix(X[198][0:35]).reshape(7,5)
@@ -22,22 +20,31 @@ def main():
 	# T = get_testing_data('general')
 	# print np.asmatrix(T[3][0:35]).reshape(7,5)
 
+# -------
+
 	tree = DecisionTree(X,6)
 	tree.print_tree()
-	
-	# perceptron = Perceptron(np.matrix(X))
+
+
+
+	X = get_data((1,4,6,9))
+	training = get_subsample(X, 1000, 9000)
+	validation = get_subsample(X, 100, 900)
+
+	# perceptron = Perceptron(sub_x)
 	# write_predictions(perceptron.training_predictions)
-	
+	# print len([p[0,1] for p in perceptron.training_predictions if p[0,1] > 0])
+
 	# lr = logistic_regression.LogisticRegression(X)
 	# lr.run()
 
 	samples = get_samples((1,2,3,4,5))
 	predictions = tree.get_predictions(samples)
-	# for point in samples:
-	# 	predictions.append(tree.get_choice(point))
-	write_predictions(predictions)
 
-	evaluate(gold='/Sample_Test_Data/groundtruth')
+	# samples = get_samples((1,2,3,4,5))
+	# predictions = tree.get_predictions(samples)
+
+	# evaluate(gold='/Sample_Test_Data/groundtruth')
 	
 	
 	
